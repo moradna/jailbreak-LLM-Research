@@ -95,7 +95,7 @@ This suggests that token cost serves as a proxy for attack difficulty, reflectin
 
 ![ASR](./plots/fig_iters_success.png)
 **Iterations to Success (Successful Episodes Only**
-The figure reports the number of iterations required to achieve a successful attack, considering successful episodes only. Ransomware exhibits the highest median iteration count (≈ 4–5) and the widest variability, indicating that even successful attacks typically require prolonged iterative refinement. In contrast, meth and scam converge more quickly, with lower median iteration counts, suggesting that effective prompts are often found early. Bomb and hack display intermediate behavior, reflecting moderate attack difficulty. Overall, the results indicate that more challenging objectives tend to require additional iterative refinement, conditioned on eventual success.
+The figure shows the number of iterations required to achieve success, considering successful episodes only. Ransomware has the highest median and variability, indicating prolonged refinement even when attacks succeed. Meth and scam converge faster, while bomb and hack show intermediate behavior. Overall, more challenging objectives tend to require additional refinement, **conditioned on eventual success**.
 
 ![ASR](./plots/fig_score_progression.png)
 **Score progression over iterations.**
