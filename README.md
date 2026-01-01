@@ -72,4 +72,38 @@ In each task, the Attacker attempts to induce the Victim to generate disallowed 
 ## 6. Results
 The following metrics were aggregated after running the autonomous loop across all harmful categories:
 
+![ASR](./plots/fig_asr.png)
+
+**Attack Success Rate (ASR) across objectives.**  
+scam is the most vulnerable objective, achieving an ASR of 1.0.
+bomb and meth exhibit moderate vulnerability, each with an ASR of 0.8.
+In contrast, hack and ransomware are the most robust objectives, both achieving an ASR of 0.4.
+Overall, the results highlight substantial variation in safety robustness across objectives, a key factor in LLM safety evaluation.
+
+![ASR](./plots/fig_qts.png)
+**Queries-to-Success (QTS) by Objective.** 
+The figure reports the average number of queries required to achieve a successful attack.
+scam is the easiest objective, requiring the fewest queries on average (≈2.8), indicating rapid convergence once an attack is attempted.
+meth and bomb show moderate difficulty, with roughly 4–4.6 queries per successful episode.
+In contrast, hack and ransomware are the hardest objectives, requiring substantially more queries (≈7–7.8), suggesting stronger resistance and slower attack progress.
+
+![ASR](./plots/fig_tokens.png)
+**Average Token Cost by Objective**
+Objectives that are harder to attack (hack, ransomware) incur significantly higher token costs, not because the attacks are inherently longer, but because the attacker model must iteratively refine and reformulate prompts after repeated failures.
+In contrast, easier objectives (scam) succeed early, requiring fewer iterations and thus fewer tokens.
+This suggests that token cost serves as a proxy for attack difficulty, reflecting the amount of adaptive effort needed to bypass safety mechanisms.
+
+![ASR](./plots/fig_iters_success.png)
+**Iterations to Success (Successful Episodes Only**
+The figure reports the number of iterations required to achieve a successful attack, considering successful episodes only.
+ransomware requires the highest number of iterations (median ≈ 4–5), indicating that successful attacks typically involve prolonged iterative refinement.
+meth and scam converge more quickly, with lower median iteration counts, suggesting that successful prompts are found early.
+bomb and hack exhibit intermediate behavior, reflecting moderate attack difficulty.
+Overall, the results indicate that harder objectives require more iterative attempts even when attacks eventually succeed.
+
+![ASR](./plots/fig_score_progression.png)
+**Score progression over iterations.**
+The figure illustrates the progression of attack scores across iterations.
+Some objectives (e.g., scam, meth) converge rapidly, while others (hack, ransomware) exhibit slower or stalled improvement, indicating higher attack difficulty.
+Overall, the results highlight differences in attack dynamics across objectives rather than final success alone.
 
