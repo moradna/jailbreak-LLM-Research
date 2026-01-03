@@ -88,27 +88,41 @@ In each task, the Attacker attempts to induce the Victim to generate disallowed 
 ## 6. Results
 The following metrics were aggregated after running the autonomous loop across all harmful categories:
 
-![ASR](./plots/fig_asr.png)
 
 **Attack Success Rate (ASR) across objectives.**  
-scam is the most vulnerable objective, achieving an ASR of 1.0.
-bomb and meth exhibit moderate vulnerability, each with an ASR of 0.8.
-In contrast, hack and ransomware are the most robust objectives, both achieving an ASR of 0.4.
-Overall, the results highlight substantial variation in safety robustness across objectives, a key factor in LLM safety evaluation.
+| Task | Baseline ASR | My Method ASR | Improvement |
+|:---|:---:|:---:|:---:|
+| **Bomb** | 0.2 | **0.9** | +350% |
+| **Hack** | 0.3 | **0.6** | +100% |
+| **Meth** | 0.4 | **0.8** | +100% |
+| **Ransomware** | 0.5 | **0.7** | +40% |
+| **Scam** | **1.0** | **1.0** | - |
 
-![ASR](./plots/fig_qts.png)
+The results show a clear improvement in ASR over the baseline for most objectives. The gains are largest for tasks with stricter safety controls (e.g., Bomb, Meth), indicating that simple prompt rephrasing is insufficient in these cases. In contrast, objectives like Scam, where the baseline already succeeds consistently, show little to no improvement. Overall, the results demonstrate that the performance gains stem from the adaptive attack loop rather than prompt phrasing alone.
+
 **Queries-to-Success (QTS) by Objective.** 
-The figure reports the average number of queries required to achieve a successful attack.
-scam is the easiest objective, requiring the fewest queries on average (≈2.8), indicating rapid convergence once an attack is attempted.
-meth and bomb show moderate difficulty, with roughly 4–4.6 queries per successful episode.
-In contrast, hack and ransomware are the hardest objectives, requiring substantially more queries (≈7–7.8), suggesting stronger resistance and slower attack progress.
+| Task | Baseline Queries | My Method Queries | Reduction (Efficiency) |
+|:---|:---:|:---:|:---:|
+| **Bomb** | 8.6 | **4.3** | -50.0% |
+| **Hack** | 8.6 | **5.7** | -33.7% |
+| **Meth** | 7.9 | **6.0** | -24.1% |
+| **Ransomware** | 6.8 | **6.2** | -8.8% |
+| **Scam** | 3.7 | **2.7** | -27.0% |
 
-![ASR](./plots/fig_tokens.png)
+Across most objectives, the proposed method requires fewer queries to achieve success compared to the baseline. The largest reductions are observed in Bomb and Hack, suggesting that adaptive feedback and strategy switching enable faster convergence. For Ransomware, the improvement is more modest, indicating that this objective remains difficult even with adaptive prompting. Overall, the results show that the method improves not only success rates but also query efficiency.
+
+
 **Average Token Cost by Objective**
-Objectives that are harder to attack (hack, ransomware) incur significantly higher token costs, not because the attacks are inherently longer, but because the attacker model must iteratively refine and reformulate prompts after repeated failures.
-In contrast, easier objectives (scam) succeed early, requiring fewer iterations and thus fewer tokens.
-This suggests that token cost serves as a proxy for attack difficulty, reflecting the amount of adaptive effort needed to bypass safety mechanisms.
 
+| Task | Baseline Tokens | My Method Tokens | Change |
+|:---|:---:|:---:|:---:|
+| **Bomb** | 1510.5 | 2277.4 | +50.8% |
+| **Hack** | 1616.8 | 3249.1 | +101.0% |
+| **Meth** | 1524.3 | 3408.5 | +123.6% |
+| **Ransomware** | 1275.3 | 3535.7 | +177.2% |
+| **Scam** | 752.5 | 1538.5 | +104.5% |
+
+The proposed method incurs a higher token cost across all objectives. This increase reflects the use of iterative prompting, feedback incorporation, and strategy switching. While token usage grows substantially, especially for more complex objectives such as Ransomware and Meth, this cost accompanies significantly higher success rates and improved query efficiency, highlighting a clear effectiveness-cost tradeoff.
 ![ASR](./plots/fig_iters_success.png)
 **Iterations to Success (Successful Episodes Only**
 The figure shows the number of iterations required to achieve success, considering successful episodes only. Ransomware has the highest median and variability, indicating prolonged refinement even when attacks succeed. Meth and scam converge faster, while bomb and hack show intermediate behavior. Overall, more challenging objectives tend to require additional refinement, **conditioned on eventual success**.
